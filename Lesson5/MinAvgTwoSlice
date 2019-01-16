@@ -1,36 +1,49 @@
+/*
+*   To resolve this problem we have to assume that there is going to be at least one slice
+*   of two or three elements which contains the minimal average.  
+*
+*/
+
 function solution(A) {
     var sums = [],
-        minSliceIndex = A.length,
-        minAverage; 
-    
-    sums.push(A[0]);
-    
-    function average(sum, elem) {
-        return sum/elem;
-    }
+        minAvg,
+        minSliceIndex = 0;
+
+    sums[0] = A[0];
     
     for (let i = 1; i < A.length; i++) {
         sums.push(A[i] + sums[i - 1]);
     }
     
-    minAverage = average(sums[1], 2);
+    minAvg = average(sums[1], 2);
 
-    for (let i = 0; i < sums.length - 1; i++) {
-        let takeOff = i === 0 ? 0 : sums[i - 1];
+    for (let i = 0; i < A.length - 2; i++) {
+        let takeOff = i === 0 ? 0 : sums[i - 1],
+            avgTwoElems = average(sums[i + 1] - takeOff, 2),
+            avgThreeElems = average(sums[i + 2] - takeOff, 3);
         
-        for (let j = i + 1; j < sums.length; j++) {
-            let curAverage;
-            
-            curAverage = average(sums[j] - takeOff, j - i + 1);
-            
-            
-            if (curAverage === minAverage && i < minSliceIndex) minSliceIndex = i;
-            if (curAverage < minAverage) {
-                minAverage = curAverage;
-                minSliceIndex = i;
-            }
-        }    
+        if (avgTwoElems < minAvg) {
+            minSliceIndex = i;
+            minAvg = avgTwoElems;
+        } else if (avgTwoElems === minAvg && i < minSliceIndex) {
+            minSliceIndex = i;
+        } 
+        
+        if (avgThreeElems < minAvg) {
+            minSliceIndex = i;
+            minAvg = avgThreeElems;    
+        } else if (avgThreeElems === minAvg && i < minSliceIndex) {
+            minSliceIndex = i;        
+        }
     }
-
+    
+    if (average(sums[A.length - 1] - sums[A.length - 3], 2) < minAvg) {
+        minSliceIndex = A.length - 2;
+    }
+    
     return minSliceIndex;
+}
+
+function average(total, elem) {
+    return total/elem;
 }
