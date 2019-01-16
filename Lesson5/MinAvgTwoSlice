@@ -1,0 +1,36 @@
+function solution(A) {
+    var sums = [],
+        minSliceIndex = A.length,
+        minAverage; 
+    
+    sums.push(A[0]);
+    
+    function average(sum, elem) {
+        return sum/elem;
+    }
+    
+    for (let i = 1; i < A.length; i++) {
+        sums.push(A[i] + sums[i - 1]);
+    }
+    
+    minAverage = average(sums[1], 2);
+
+    for (let i = 0; i < sums.length - 1; i++) {
+        let takeOff = i === 0 ? 0 : sums[i - 1];
+        
+        for (let j = i + 1; j < sums.length; j++) {
+            let curAverage;
+            
+            curAverage = average(sums[j] - takeOff, j - i + 1);
+            
+            
+            if (curAverage === minAverage && i < minSliceIndex) minSliceIndex = i;
+            if (curAverage < minAverage) {
+                minAverage = curAverage;
+                minSliceIndex = i;
+            }
+        }    
+    }
+
+    return minSliceIndex;
+}
