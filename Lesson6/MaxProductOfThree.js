@@ -5,8 +5,7 @@ function compare(num1, num2) {
 }
 
 function solution(A) {
-    var nums = [],
-        prod = 1,            
+    var prod = 1,            
         pos = [],
         neg = [];
     
