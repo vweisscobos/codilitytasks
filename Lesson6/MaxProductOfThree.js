@@ -6,11 +6,9 @@ function compare(num1, num2) {
 
 function solution(A) {
     var nums = [],
-        prod = 1,
-        i = 1
-    
-    let pos = [];
-    let neg = [];
+        prod = 1,            
+        pos = [],
+        neg = [];
     
     A.sort(compare);
     
