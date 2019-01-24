@@ -1,6 +1,5 @@
 function solution(A) {
-    var peaks = [],
-        distances = [0];
+    var peaks = [];
         
     for (let i = 1; i < A.length; i++) {
         if (A[i] > A[i - 1] && A[i] > A[i + 1]) peaks.push(i);
